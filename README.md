@@ -4,7 +4,7 @@ Open source code repo for MIT-Andorra collaboration on modelling mobility behavi
 ## Data and analysis processing
 
 ### Data
-Individuals' data are private. Aggregate metrics are computed over individuals' data. Aggregated metrics are output in `/data/public/metrics/`.
+Individuals' data are private. Aggregate metrics are computed over individuals' data. Aggregated metrics are output in `/outputs/metrics/`.
 
 ### Preprocessing
 
@@ -49,7 +49,7 @@ The Pearson correlation is 0.958.
 
 ## Metrics
 
-Metrics are computed over the preprocessed stays data and output in /data/public/metrics.
+Metrics are computed over the preprocessed stays data and output in /outputs/metrics.
 
 ## Analysis
 
