@@ -9,6 +9,10 @@ import datetime
 import json
 import math
 
+# Enter directory locations below
+DIR4G=''
+DIR3G=''
+
 
 def get_haversine_distance(point_1, point_2):
     """
@@ -69,10 +73,7 @@ def get_stay_points(line):
                                  'l':ts_unix[j],
                                  'e':ts_unix[end_index],
                                  'n':(j-i+1),
-                                 'n_4G': sum(is_4G[i:j+1])}])
-                 # 'io': dict(Counter(indooroutdoor[i:j+1])),
-                 # 'cellid': dict(Counter(cellid[i:j+1]))
-                 # }])       
+                                 'n_4G': sum(is_4G[i:j+1])}])      
         i=j+1
     return {'mcc': mcc, 'stay_points': stay_points, 'imsi': imsi}
         
@@ -94,8 +95,8 @@ for date in dates:
     month=date['month']
     day=date['day']
     print('RNC data')
-    rnc_4G_Df=spark.read.parquet('../../data/andorratelecom/GDR/4G/year={}/month={}/day={}/hour={}/*.snappy.parquet'.format(year, month, day, hour))
-    rnc_3G_Df=spark.read.parquet('../../data/andorratelecom/GDR/3G/year={}/month={}/day={}/hour={}/*.snappy.parquet'.format(year, month, day, hour))
+    rnc_4G_Df=spark.read.parquet('{}/year={}/month={}/day={}/hour={}/*.snappy.parquet'.format(DIR4G, year, month, day, hour))
+    rnc_3G_Df=spark.read.parquet('{}/year={}/month={}/day={}/hour={}/*.snappy.parquet'.format(DIR3G, year, month, day, hour))
 
     rnc_3G_Df=rnc_3G_Df.withColumn('4G', lit(0))
     rnc_4G_Df=rnc_4G_Df.withColumn('4G', lit(1))
