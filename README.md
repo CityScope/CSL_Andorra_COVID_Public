@@ -30,9 +30,15 @@ Files are further processed
 This code is in `/preprocessing/stays/`.
 
 
+#### Trips
+
+See `/preprocessing/trips/`.
+
+Basic daily trips metrics are precomputed from the stays data.
+
 #### Presence, entrances, departures
 
-See `/preprocessing/presence`.
+See `/preprocessing/presence/`.
 
 In  order  to  compute  daily  mobility  metrics  across  all  peoplepresent in the country, it was necessary to know which people were  present  on  any  day.  Some  devices  were  found  to  beunobserved  in  the  data  for  several  days,  even  during  the  fullgovernment  lockdown.  This  may  be  due  to  a  combinationof  inactivity,  lack  of  telecoms  reception  in  certain  areas, and/or  noisy  data.  It  was  assumed  that  gaps  in  data  of  two weeks or more represented true absence from the country. The beginnings  and  endings  of  periods  of  presence  were  counted as entrances to and departures from the country respectively. By  observing  the  distribution  of  total  number  of  dayspresent  across  all  subscribers,  it  was  found  that  the  majority of  subscribers  were  present  fewer  than  50  days.  The  restof  the  subscribers  were  present  for  a  significantly  greaternumber of days. 50 days of presence in Andorra was thereforeconsidered  as  an  appropriate  cutoff  for  identifying  tourists.Further analysis uses this categorization of tourists versus non-tourists.
 
