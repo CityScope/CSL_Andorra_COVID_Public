@@ -8,7 +8,7 @@ The criteria for inferring home parish is described below.
 
 
 Usage:
-python python/infer_homes.py --month=yyyy-mm \
+python infer_homes.py --month=yyyy-mm \
     --month MONTH is the Year-Month for which to infer homes.
     [--stays_path STAYS_PATH] \
     [--homes_path HOMES_PATH]
@@ -18,7 +18,7 @@ optional arguments
     --homes_path=STRING is a path to where output inferred homes data is saved.
     
 Example usage:
-python python/infer_homes.py \
+python infer_homes.py \
     --month=2020-3 \
     --stays_path=/home/data_commons/andorra_data_2020/stays/ \
     --homes_path=/home/data_commons/andorra_data_2020/homes/ \
