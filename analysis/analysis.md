@@ -13,3 +13,9 @@ Estimation of the total number of COVID-19 exposures as of the beginning of the 
 ## colocations_and_crowding.ipynb
 Computation of the colocations and indoor/outdoor crowding index for every spatio-temporal cell in Andorra during the study-period. The data inputs are sensitive and not publicly accessible.
 
+## cases_vs_mobility.ipynb
+Computation of case growth rate over the susceptible population, as well as computation of multiple mobility metrics. The susceptible population used in the case growth rate computation is inferred from the precomputed presence data.
+Correlations between the various mobility metrics and case growth are compared.
+
+## staying_home.ipynb
+Computation and analysis of the number of users staying home, by parish, over the timeline of the study.
