@@ -10,14 +10,17 @@ python presence_entrances_departures.py \
     --start_date=yyyy-mm-dd \
     --end_date=yyyy-mm-dd \
     --data_filepath=PATH \
-    --outputs_filepath=PATH
+    --outputs_filepath=PATH \
+    [--window=INT]
    
 Example usage:
 nohup python presence_entrances_departures.py \
    --start_date=2019-03-01 \
    --end_date=2019-06-30 \
    --data_filepath=/home/data_commons/andorra_data_2020/  \
-   --outputs_filepath=./outputs/metrics/ > nohup_presence_2019.out &
+   --outputs_filepath=./outputs/metrics/ \
+   --window=13 \
+   > nohup_presence_2019.out &
 
 
 Saves aggregate daily presence counts to 
@@ -45,7 +48,7 @@ ENTRANCES = 'entrances'
 
 date_fmt = '%Y-%m-%d'
 
-WINDOW = 13
+DEFAULT_WINDOW = 13
 
 # MCC
 ALL = 'All'
@@ -104,7 +107,7 @@ def get_days_observed(data_filepath, datetimes):
     return all_persons_summary, ind_missing_dates
 
 
-def infer_days_present(ind_days_observed, window=WINDOW, ind_missing_dates=[]):
+def infer_days_present(ind_days_observed, window, ind_missing_dates=[]):
     """
     Infer which days each user was present based on the days they were observed.<br>
     Assume that small gaps in observations are days when the person was still present but their device was not observed.
@@ -155,7 +158,7 @@ def infer_days_present(ind_days_observed, window=WINDOW, ind_missing_dates=[]):
     return ind_days_present, departures, entrances
 
 
-def get_presence_entrances_departures_dfs(datetimes, all_persons_summary, ind_missing_dates, window=WINDOW):
+def get_presence_entrances_departures_dfs(datetimes, all_persons_summary, ind_missing_dates, window):
     """
     returns presence_df, entrance_departure_df
     presence_df:
@@ -207,18 +210,18 @@ if __name__ == '__main__':
     parser.add_argument('--end_date', required=True)
     parser.add_argument('--data_filepath', required=True)
     parser.add_argument('--outputs_filepath', required=True)
+    parser.add_argument('--window', default=DEFAULT_WINDOW)
     args = parser.parse_args()
-
     start_date = datetime.strptime(args.start_date, date_fmt)
     end_date = datetime.strptime(args.end_date, date_fmt)
     datetimes = [d for d in daterange(start_date, end_date)]
-    print('--- get presence, entrances, departures ---')
-    print('datetimes: %s - %s' % (datetimes[0], datetimes[-1]))
-    year = start_date.year
     data_filepath, outputs_filepath = args.data_filepath, args.outputs_filepath
+    window = int(args.window)
+    print('--- get presence, entrances, departures with %s-day window ---' % window)
+    print('datetimes: %s - %s' % (datetimes[0], datetimes[-1]))
     all_persons_summary, ind_missing_dates= get_days_observed(data_filepath, datetimes)
-    print('computed all_persons_summary. %s missing dates' % ind_missing_dates)
-    presence_df, entrance_departure_df = get_presence_entrances_departures_dfs(datetimes, all_persons_summary, ind_missing_dates)
+    print('computed all_persons_summary for %s-day window. %s missing dates' % (window, ind_missing_dates))
+    presence_df, entrance_departure_df = get_presence_entrances_departures_dfs(datetimes, all_persons_summary, ind_missing_dates, window)
     print('computed presence, entrance_departure dfs')
     # mark tourists
     # Tourists: observed on fewer than 50 days of the whole dataset
@@ -238,11 +241,11 @@ if __name__ == '__main__':
             ind_other.append(ind)
     presence_df_tourists = presence_df.iloc[ind_tourist]
     presence_df_non_tourists = presence_df.iloc[ind_other]
-    presence_tourists_filepath = ('%spresence/%s/presence_tourists.csv'%(
-        data_filepath, year
+    presence_tourists_filepath = ('%spresence/%s/presence_tourists%s.csv'%(
+        data_filepath, start_date.year, ('_%s_day_window'%window if window!=DEFAULT_WINDOW else '')
     ))
-    presence_others_filepath = ('%spresence/%s/presence_others.csv'%(
-        data_filepath, year
+    presence_others_filepath = ('%spresence/%s/presence_others%s.csv'%(
+        data_filepath, start_date.year, ('_%s_day_window'%window if window!=DEFAULT_WINDOW else '')
     ))
     print('saving tourists presence data to %s' % presence_tourists_filepath)
     presence_df_tourists.to_csv(presence_tourists_filepath)
@@ -268,15 +271,15 @@ if __name__ == '__main__':
         'tourists': tourists_present,
         'non-tourists': non_tourists_present,
     }).set_index(DATE)
-    aggregate_presence_filepath = ('%s%s/presence.csv'%(
-        outputs_filepath, year
+    aggregate_presence_filepath = ('%s%s/presence%s.csv'%(
+        outputs_filepath, start_date.year, ('_%s_day_window'%window if window!=DEFAULT_WINDOW else '')
     ))
     print('saving aggregate_presence data to %s' % aggregate_presence_filepath)
     aggregate_presence_df.to_csv(aggregate_presence_filepath, index=True, index_label=DATE)
 
     # save entrances and departures data to public outputs/metrics
-    entrance_departure_filepath = ('%s%s/entrance_departure.csv'%(
-        outputs_filepath, year
+    entrance_departure_filepath = ('%s%s/entrance_departure%s.csv'%(
+        outputs_filepath, start_date.year, ('_%s_day_window'%window if window!=DEFAULT_WINDOW else '')
     ))
     print('saving entrance_departure data to %s' % entrance_departure_filepath)
     entrance_departure_df.to_csv(entrance_departure_filepath, index=True, index_label=DATE)
