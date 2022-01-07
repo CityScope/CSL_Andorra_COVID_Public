@@ -1,4 +1,6 @@
 data/private
+# outputs figures are large files that are already in notebooks. Do not commit.
+outputs/figures
 *_dev.ipynb
 *_dev-checkpoint.ipynb
 .ipynb_checkpoints
