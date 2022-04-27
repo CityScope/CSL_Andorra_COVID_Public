@@ -1,6 +1,16 @@
 # CSL_Andorra_COVID_Public
 Open source code repo for MIT-Andorra collaboration on modelling mobility behaviour and COVID-19 spread.
 
+## Paper citations
+
+This code represents the analysis in the following papers.
+
+Berke, A., Doorley, R., Alonso, L., Arroyo, V., Pons, M., & Larson, K. (2022) Using mobile phone data to estimate dynamic population changes and improve the understanding of a pandemic: A case study in Andorra. PLoS ONE 17(4): e0264860. https://doi.org/10.1371/journal.pone.0264860
+
+Doorley, R., Berke, A., Noyman, A., Alonso, L., Ribó, J., Arroyo, V., Pons, M., & Larson, K. (2021). Mobility and COVID-19 in Andorra: Country-scale analysis of high-resolution mobility patterns and infection spread. IEEE Journal of Biomedical and Health Informatics, 26(1), 183-193. doi: 10.1109/JBHI.2021.3121165.
+
+
+
 ## Data and analysis processing
 
 ### Data
